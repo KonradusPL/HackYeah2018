@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "788167585560",
+    "firebase_url": "https://hackyeah2018-c01bf.firebaseio.com",
+    "project_id": "hackyeah2018-c01bf",
+    "storage_bucket": "hackyeah2018-c01bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:788167585560:android:e6276fc2b2e46155",
+        "android_client_info": {
+          "package_name": "com.konradpekala.hackyeah2018"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "788167585560-2u593gmvuf91ms3lbujp3njf96b2hvmv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFPqC235GB5uJNoaTQ7VAPy_adwrwToVk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
