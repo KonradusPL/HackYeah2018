@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ServerNetworking {
-    private val BASE_URL = "http://35.234.124.12:3000/"
+    private val BASE_URL = "http://10.250.195.220:5000/"
 
     private var gson = GsonBuilder()
         .setLenient()
@@ -19,8 +19,4 @@ object ServerNetworking {
         .build()
 
     val webApi = retrofit.create(WebApi::class.java)
-
-    fun getApi(): WebApi{
-        return webApi
-    }
 }

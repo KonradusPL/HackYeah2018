@@ -6,7 +6,7 @@ import com.estimote.mustard.rx_goodness.rx_requirements_wizard.RequirementsWizar
 import com.konradpekala.hackyeah2018.ui.base.BasePresenter
 import com.konradpekala.hackyeah2018.service.BeaconService
 
-class MainPresenter(view: MainMvp.View): BasePresenter(view),MainMvp.Presenter {
+class MainPresenter<V: MainMvp.View>(view: V): BasePresenter<V>(view),MainMvp.Presenter {
 
     override fun onEnableScanningClick() {
         RequirementsWizardFactory.createEstimoteRequirementsWizard().fulfillRequirements(

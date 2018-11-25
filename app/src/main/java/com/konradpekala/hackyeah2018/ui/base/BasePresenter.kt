@@ -2,7 +2,7 @@ package com.konradpekala.hackyeah2018.ui.base
 
 import io.reactivex.disposables.CompositeDisposable
 
-open class BasePresenter(protected val view: MvpView): MvpPresenter {
+open class BasePresenter<V: MvpView>(protected val view: V): MvpPresenter {
 
     protected val compositeDisposable = CompositeDisposable()
 
