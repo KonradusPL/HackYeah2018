@@ -13,6 +13,8 @@ object CardRepository {
     val webApi = ServerNetworking.webApi
 
     fun saveCard(cardInfo: CardInfo): Single<String>{
+        cardsCatche.add(cardInfo)
+
         return webApi.saveCard(cardInfo)
             .subscribeOn(SchedulerProvider.io())
             .observeOn(SchedulerProvider.ui())

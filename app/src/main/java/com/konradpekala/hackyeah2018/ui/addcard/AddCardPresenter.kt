@@ -34,8 +34,4 @@ class AddCardPresenter<V: AddCardMvp.View>(view: V, val cardRepo: CardRepository
         }))
     }
 
-    override fun start() {
-        super.start()
-    }
-
 }

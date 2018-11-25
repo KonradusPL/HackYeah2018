@@ -6,6 +6,10 @@ open class BasePresenter<V: MvpView>(protected val view: V): MvpPresenter {
 
     protected val compositeDisposable = CompositeDisposable()
 
+    override fun onCreate() {
+
+    }
+
     override fun start() {
     }
 

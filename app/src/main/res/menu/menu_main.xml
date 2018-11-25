@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
 <item app:showAsAction="always"
     android:title="enablePaying"
+      android:id="@+id/enablePaying"
       android:icon="@drawable/ic_rss_feed_black_24dp"
 />
 </menu>

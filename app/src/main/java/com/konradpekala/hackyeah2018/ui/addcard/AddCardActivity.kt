@@ -5,18 +5,12 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.konradpekala.hackyeah2018.R
-import com.konradpekala.hackyeah2018.data.model.CardInfo
-import com.konradpekala.hackyeah2018.data.network.ServerNetworking
 import com.konradpekala.hackyeah2018.data.repository.CardRepository
 import com.konradpekala.hackyeah2018.ui.base.BaseActivity
 import com.konradpekala.hackyeah2018.ui.main.CardsAdapter
 import com.konradpekala.hackyeah2018.utils.ExpirationDateWatcher
 import com.konradpekala.hackyeah2018.utils.FourDigitsWatcher
 import kotlinx.android.synthetic.main.activity_add_card.*
-import kotlinx.android.synthetic.main.activity_main.*
-import android.support.v7.widget.PagerSnapHelper
-import android.support.v7.widget.SnapHelper
-
 
 
 class AddCardActivity: BaseActivity(),AddCardMvp.View {
@@ -35,11 +29,12 @@ class AddCardActivity: BaseActivity(),AddCardMvp.View {
             val fullName = inputFullName.text.toString()
             mPresenter.onSaveCardClick(cardNumber, date, cvc, fullName)
         }
+
+        mPresenter.onCreate()
     }
 
     override fun onStart() {
         super.onStart()
-        mPresenter.start()
     }
 
     override fun onStop() {
