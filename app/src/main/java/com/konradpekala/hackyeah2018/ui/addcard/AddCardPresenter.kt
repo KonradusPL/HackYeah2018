@@ -1,6 +1,7 @@
 package com.konradpekala.hackyeah2018.ui.addcard
 
 import android.util.Log
+import com.konradpekala.hackyeah2018.data.model.CardInfo
 import com.konradpekala.hackyeah2018.data.repository.CardRepository
 import com.konradpekala.hackyeah2018.ui.base.BasePresenter
 
@@ -16,19 +17,12 @@ class AddCardPresenter<V: AddCardMvp.View>(view: V, val cardRepo: CardRepository
         val month = date.substring(0, 2)
         val year = date.substring(3, 5)
 
-        val map = HashMap<String, String>()
-        map["cardNumber"] = cardNumber
-        map["expirationYear"] = month
-        map["expirationMonth"] = year
-        map["cvc"] = cvc
-        map["fullName"] = fullName
-
-        Log.d("onSaveCardClick",map.toString())
+        val cardinfo = CardInfo(cardNumber.toLong(),month.toInt(),year.toInt(),cvc,fullName)
 
         view.showLoading()
         view.disableButton()
 
-        compositeDisposable.add(cardRepo.saveCard(map).subscribe({ t: String? ->
+        compositeDisposable.add(cardRepo.saveCard(cardinfo).subscribe({ t: String? ->
             view.showMessage("Udało się !")
             view.hideLoading()
             view.enableButton()
@@ -38,6 +32,10 @@ class AddCardPresenter<V: AddCardMvp.View>(view: V, val cardRepo: CardRepository
             view.enableButton()
             Log.d("saveCard", t.toString())
         }))
+    }
+
+    override fun start() {
+        super.start()
     }
 
 }

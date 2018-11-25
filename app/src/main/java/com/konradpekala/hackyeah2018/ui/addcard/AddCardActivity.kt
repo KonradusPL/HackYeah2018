@@ -1,18 +1,27 @@
 package com.konradpekala.hackyeah2018.ui.addcard
 
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.konradpekala.hackyeah2018.R
+import com.konradpekala.hackyeah2018.data.model.CardInfo
 import com.konradpekala.hackyeah2018.data.network.ServerNetworking
 import com.konradpekala.hackyeah2018.data.repository.CardRepository
 import com.konradpekala.hackyeah2018.ui.base.BaseActivity
+import com.konradpekala.hackyeah2018.ui.main.CardsAdapter
 import com.konradpekala.hackyeah2018.utils.ExpirationDateWatcher
 import com.konradpekala.hackyeah2018.utils.FourDigitsWatcher
 import kotlinx.android.synthetic.main.activity_add_card.*
+import kotlinx.android.synthetic.main.activity_main.*
+import android.support.v7.widget.PagerSnapHelper
+import android.support.v7.widget.SnapHelper
+
+
 
 class AddCardActivity: BaseActivity(),AddCardMvp.View {
 
-    private val mPresenter = AddCardPresenter(this, CardRepository(ServerNetworking.webApi))
+    private val mPresenter = AddCardPresenter(this, CardRepository)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +37,17 @@ class AddCardActivity: BaseActivity(),AddCardMvp.View {
         }
     }
 
-    private fun initUI(){
+    override fun onStart() {
+        super.onStart()
+        mPresenter.start()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mPresenter.stop()
+    }
+
+    private fun initUI() {
         setSupportActionBar(toolbarAddCard)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -54,4 +73,5 @@ class AddCardActivity: BaseActivity(),AddCardMvp.View {
     override fun hideLoading() {
         progressAddCard.visibility = View.GONE
     }
+
 }
