@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.support.v4.app.NotificationManagerCompat
 import android.util.Log
+import com.konradpekala.hackyeah2018.ui.payment.PaymentActivity
 
 class MyBroadcastReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
@@ -15,6 +16,8 @@ class MyBroadcastReceiver: BroadcastReceiver() {
 
             if(notifId != null)
                 NotificationManagerCompat.from(context).cancel(notifId as Int)
+
+            context.startActivity(Intent(context,PaymentActivity::class.java))
         }
     }
 }

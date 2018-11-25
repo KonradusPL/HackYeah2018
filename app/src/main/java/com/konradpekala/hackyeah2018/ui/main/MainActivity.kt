@@ -55,6 +55,18 @@ class MainActivity : BaseActivity(),MainMvp.View {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main,menu)
+        val drawable = menu[0].icon
+        drawable.mutate()
+        if(drawable != null){
+            if (AppCache.isBeaconServiceRunning){
+                drawable.setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP)
+
+            }
+            else{
+                drawable.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP)
+            }
+        }
+
 
         return true
     }
@@ -69,9 +81,7 @@ class MainActivity : BaseActivity(),MainMvp.View {
     private fun initList(){
         mListAdapter = CardsAdapter(ArrayList(), this)
         listCards.adapter = mListAdapter
-        listCards.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL,false)
-        val snapHelper = PagerSnapHelper()
-        snapHelper.attachToRecyclerView(listCards)
+        listCards.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL,false)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -16,7 +16,7 @@
             android:minHeight="?attr/actionBarSize"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
             android:id="@+id/toolbarAddCard" app:layout_constraintTop_toTopOf="parent"
-         app:title="Dodaj kartę"
+         app:title="Add your card"
     android:elevation="4dp"/>
 
 
@@ -37,7 +37,7 @@
                 android:drawableEnd="@drawable/ic_credit_card_black_24dp"
                 android:drawablePadding="8dp"
                 android:theme="@style/MyTheme.EditText"
-                android:hint="Numer karty"
+                android:hint="Card number"
                 android:inputType="phone"
                 android:maxLines="1"
                 android:maxLength="19"
@@ -95,7 +95,7 @@
         />
     </android.support.design.widget.TextInputLayout>
     <Button
-            android:text="Dodaj kartę"
+            android:text="Add a card"
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:id="@+id/buttonSaveCard" android:layout_marginBottom="8dp"
@@ -124,7 +124,7 @@
                 android:drawableEnd="@drawable/ic_person_black_24dp"
                 android:drawablePadding="8dp"
                 android:theme="@style/MyTheme.EditText"
-                android:hint="Imie i nazwisko"
+                android:hint="Full name"
                 android:inputType="textPersonName"
                 android:maxLines="1"
                 android:maxLength="19"

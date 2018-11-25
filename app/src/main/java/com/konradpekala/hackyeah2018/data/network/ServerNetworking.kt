@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ServerNetworking {
-    private val BASE_URL = "http://10.250.195.220:5000/"
+    private val BASE_URL = "http://3938ceaf.ngrok.io"
 
     private var gson = GsonBuilder()
         .setLenient()

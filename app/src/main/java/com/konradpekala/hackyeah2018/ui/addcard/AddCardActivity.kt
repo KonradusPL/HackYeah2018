@@ -1,5 +1,6 @@
 package com.konradpekala.hackyeah2018.ui.addcard
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -8,6 +9,7 @@ import com.konradpekala.hackyeah2018.R
 import com.konradpekala.hackyeah2018.data.repository.CardRepository
 import com.konradpekala.hackyeah2018.ui.base.BaseActivity
 import com.konradpekala.hackyeah2018.ui.main.CardsAdapter
+import com.konradpekala.hackyeah2018.ui.main.MainActivity
 import com.konradpekala.hackyeah2018.utils.ExpirationDateWatcher
 import com.konradpekala.hackyeah2018.utils.FourDigitsWatcher
 import kotlinx.android.synthetic.main.activity_add_card.*
@@ -67,6 +69,11 @@ class AddCardActivity: BaseActivity(),AddCardMvp.View {
 
     override fun hideLoading() {
         progressAddCard.visibility = View.GONE
+    }
+
+    override fun returnToMainActivity() {
+        startActivity(Intent(this,MainActivity::class.java))
+        finish()
     }
 
 }

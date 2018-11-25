@@ -8,13 +8,14 @@ import io.reactivex.Single
 
 object CardRepository {
 
-    private val cardsCatche = ArrayList<CardInfo>()
+    val cardsCatche = ArrayList<CardInfo>()
 
     val webApi = ServerNetworking.webApi
 
-    fun saveCard(cardInfo: CardInfo): Single<String>{
-        cardsCatche.add(cardInfo)
+    var currentPrice: String = ""
+    var currentBeacon: String = ""
 
+    fun saveCard(cardInfo: CardInfo): Single<String>{
         return webApi.saveCard(cardInfo)
             .subscribeOn(SchedulerProvider.io())
             .observeOn(SchedulerProvider.ui())

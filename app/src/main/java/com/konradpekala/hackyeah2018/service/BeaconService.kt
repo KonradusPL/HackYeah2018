@@ -20,9 +20,14 @@ import com.estimote.proximity_sdk.api.ProximityObserver
 import com.estimote.proximity_sdk.api.ProximityObserverBuilder
 import com.konradpekala.hackyeah2018.ui.main.MainActivity
 import com.konradpekala.hackyeah2018.R
+import com.konradpekala.hackyeah2018.data.network.ServerNetworking
+import com.konradpekala.hackyeah2018.data.repository.CardRepository
 import com.konradpekala.hackyeah2018.utils.BeaconUtils
+import com.konradpekala.hackyeah2018.utils.SchedulerProvider
+import io.reactivex.disposables.CompositeDisposable
 import org.jetbrains.anko.toast
 import java.util.*
+import kotlin.collections.HashMap
 
 class BeaconService: Service(), BeaconUtils.BeaconListener{
 
@@ -33,45 +38,40 @@ class BeaconService: Service(), BeaconUtils.BeaconListener{
 
     private var mObservationHandler: ProximityObserver.Handler? = null
 
+    val compositeDisposable = CompositeDisposable()
+
     var notificationManager: NotificationManagerCompat? = null
 
     override fun onCreate() {
         super.onCreate()
         notificationManager = NotificationManagerCompat.from(this)
         BeaconUtils.listener = this
+
+        val notification: Notification = NotificationCompat.Builder(this, "")
+            .setContentTitle("Scanning")
+            .setContentText("Scanning beacons in progress...")
+            .setSmallIcon(R.drawable.ic_rss_feed_white_24dp)
+            .build()
+
+        startForeground(Random().nextInt(1000), notification)
+
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        toast("onStartCommand")
-        val pendingIntent: PendingIntent =
-            Intent(this, MainActivity::class.java).let { notificationIntent ->
-                PendingIntent.getActivity(this, 0, notificationIntent, 0)
-            }
-
         val proximityObserver = ProximityObserverBuilder(applicationContext, cloudCredentials)
             .withBalancedPowerMode()
-            .withEstimoteSecureMonitoringDisabled()
-            .withTelemetryReportingDisabled()
             .onError { throwable: Throwable ->  Log.d("Beacons",throwable.toString()) }
-            .build()
-
-        val notification: Notification = NotificationCompat.Builder(this, "")
-            .setContentTitle("Skanowanie beaconów")
-            .setContentText("Skanowanie beaconów w toku")
-            .setSmallIcon(R.drawable.ic_rss_feed_white_24dp)
-            .setContentIntent(pendingIntent)
             .build()
 
         mObservationHandler = proximityObserver.startObserving(BeaconUtils.beaconZones)
 
-        startForeground(1, notification)
         return START_NOT_STICKY
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        toast("onDestroy")
         mObservationHandler?.stop()
+        compositeDisposable.clear()
     }
 
     override fun onBind(p0: Intent?): IBinder? {
@@ -79,7 +79,27 @@ class BeaconService: Service(), BeaconUtils.BeaconListener{
     }
 
     override fun onEnterZone(tag: String) {
+        Log.d("onEnterZone",tag)
+
+        val webApi = ServerNetworking.webApi
+
+        compositeDisposable.add(webApi.getPrice(tag)
+            .subscribeOn(SchedulerProvider.io())
+            .observeOn(SchedulerProvider.ui())
+            .subscribe({t: HashMap<String, Any>? ->
+                val value = t?.get("value").toString() ?: ""
+                showPaymentNotif(value, tag)
+            },{t: Throwable? ->
+                Log.d("onEnterZone",t.toString())
+            }))
+
+    }
+
+    fun showPaymentNotif(price: String, tag: String){
         val notifId = Random().nextInt(100000)
+
+        CardRepository.currentPrice = price
+        CardRepository.currentBeacon = tag
 
         val yesIntent = Intent(this, MyBroadcastReceiver::class.java).apply {
             action = "yes"
@@ -96,12 +116,12 @@ class BeaconService: Service(), BeaconUtils.BeaconListener{
             PendingIntent.getBroadcast(this, Random().nextInt(100000), noIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_DEFAULT_IMPORTANCE)
-            .setContentTitle("Potwierdzenie płatności")
-            .setContentText("Miejsce: $tag, płatność")
+            .setContentTitle("Payment confirmation")
+            .setContentText("Price: $price")
             .setSmallIcon(R.drawable.ic_rss_feed_white_24dp)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .addAction(R.drawable.ic_add_white_24dp,"TAK",yesPendingIntent)
-            .addAction(R.drawable.ic_cancel_black_24dp,"NIE",noPendingIntent)
+            .addAction(R.drawable.ic_add_white_24dp,"PAY",yesPendingIntent)
+            .addAction(R.drawable.ic_cancel_black_24dp,"SPLITE",noPendingIntent)
 
         notificationManager?.notify(notifId, notificationBuilder.build())
 

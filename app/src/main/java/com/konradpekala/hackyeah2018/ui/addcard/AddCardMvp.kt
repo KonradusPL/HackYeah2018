@@ -10,6 +10,7 @@ interface AddCardMvp {
         fun disableButton()
         fun showLoading()
         fun hideLoading()
+        fun returnToMainActivity()
     }
     interface Presenter: MvpPresenter{
         fun onSaveCardClick(cardNumber: String, date: String, cvc: String, fullName: String)
